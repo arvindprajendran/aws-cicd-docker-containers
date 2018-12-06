@@ -1,0 +1,26 @@
+stages:
+- name: Build
+  steps:
+  - runScriptConfig:
+      image: golang:latest
+      shellScript: |-
+        # example
+        stages:
+        - name: Build something
+          steps:
+          - runScriptConfig:
+              image: golang
+              shellScript: go build
+- name: Deploy
+  steps:
+  - publishImageConfig:
+      dockerfilePath: ./Dockerfile
+      buildContext: .
+      tag: name:tag
+      pushRemote: true
+      registry: 886211781477.dkr.ecr.us-east-1.amazonaws.com/gs-arvin-docker-repo
+- name: Publish
+  steps:
+  - applyYamlConfig:
+      path: ./deployment.yaml
+timeout: 60
